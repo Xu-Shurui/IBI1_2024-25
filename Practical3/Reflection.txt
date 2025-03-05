@@ -1,0 +1,4 @@
+This practical was a great learning experience.
+I enjoyed learning about version control with Git and GitHub. 
+The process of creating a simple website with GitHub Pages was also very interesting.
+I found the task of merging branches and resolving conflicts particularly challenging but rewarding.
