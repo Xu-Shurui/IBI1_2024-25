@@ -11,6 +11,14 @@ else:
 #Taking the bus is quicker
 X = True
 Y = False
-W = X and Y 
-#print(W)
-#W (both X and Y): False
+W = X and Y
+
+print(f"Initial values: X={X}, Y={Y} => W={W}")
+
+
+print("\nTruth table for W (X and Y):")
+
+for X in [True, False]:
+    for Y in [True, False]:
+        W = X and Y
+        print(f"X: {X}, Y: {Y} => W: {W}")
