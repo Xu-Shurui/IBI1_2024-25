@@ -13,3 +13,4 @@ X = True
 Y = False
 W = X and Y 
 #print(W)
+#W (both X and Y): False
