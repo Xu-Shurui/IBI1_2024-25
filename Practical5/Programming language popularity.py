@@ -10,4 +10,10 @@ plt.xlabel('Programming Languages')#x-axis label
 plt.ylabel('Popularity Percentage')#y-axis label
 plt.xticks(fontsize=8, rotation=45)#setting the font size and rotation of x-axis labels
 plt.yticks(fontsize=8)#setting the font size of y-axis labels
-plt.show()
+plt.show()#displaying the bar graph
+user_input = input("\nEnter a programming language from the list: ")#taking user input
+if user_input in programming_languages:#checking if the user input is in the dictionary
+    percentage = programming_languages[user_input]#popularity percentage of the user input
+    print(f"The percentage of developers who use {user_input} is: {percentage}%")#printing the popularity percentage of the user input
+else:
+    print(f"{user_input} is not in the list of top 5 programming languages.")#printing that the user input is not in the list of top 5 programming languages
