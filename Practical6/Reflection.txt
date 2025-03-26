@@ -1,0 +1,4 @@
+The SIR model practical session was challenging yet rewarding.
+The simple SIR model was relatively straightforward, while the spatial model was complex due to its two-dimensional nature.
+I enjoyed the simple SIR model the most as it clearly showed disease spread dynamics.
+The most important thing I learned was the flexibility of SIR models in capturing different aspects of real-world disease spread.
