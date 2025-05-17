@@ -1,7 +1,3 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-
-
 def read_mrna():
     file_name = str(input("please input the file name:"))
     file = open(file_name , "r").read()
@@ -9,7 +5,6 @@ def read_mrna():
     mrna = file[index:]
     mrna = mrna.replace("\n" , "")
     return mrna
-    
 
 def find_codons(mrna):
     codons = []
@@ -26,26 +21,35 @@ def find_codons(mrna):
             codons.append(codon)
     return codons
 
-mrna = read_mrna()
-
 def select_task():
     task = int(input("please select the task:"))
     codons = find_codons(mrna)
-    if task == 1:
-        from task1 import abc
-        abc(codons)
+    if task == 0:
+        return 0
+    elif task == 1:
+        from task1 import most_frequent_nucleotide
+        most_frequent_nucleotide(codons)
+        return select_task()
     elif task == 2:
         from task2 import nucleotide_amino
-        print(nucleotide_amino(mrna))
-    elif task == 3:  
+        print(nucleotide_amino(codons))
+        return select_task()
+    elif task == 3:
         from task3 import plot_amino_acid_frequency
         plot_amino_acid_frequency(codons)
-    elif task == 4:
-        mrna2 = str(input())
-        from task4 import compare_mrna
-        compare_mrna(mrna , mrna2 , 11)
-    else:
-        print("please input 1, 2, 3 or 4")
         return select_task()
-        
+    elif task == 4:
+        file_name = str(input("please input the file name fo the second mRNA sequence:"))
+        file = open(file_name , "r").read()
+        index = file.find("\n")
+        mrna2 = file[index:]
+        mrna2 = mrna2.replace("\n" , "")
+        from task4 import compare_mrna
+        compare_mrna(mrna, mrna2, 11)
+        return select_task()
+    else:
+        print("please input 0, 1, 2, 3 or 4")
+        return select_task()
+
+mrna = read_mrna()       
 select_task()

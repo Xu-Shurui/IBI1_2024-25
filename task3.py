@@ -5,7 +5,6 @@ from collections import Counter
 from Bio.Data import CodonTable
 
 def plot_amino_acid_frequency(codons):
-    plt.style.use('seaborn-darkgrid')
     sns.set_palette("rocket")  
     plt.rcParams['font.family'] = 'DejaVu Sans'  
     rna_table = CodonTable.standard_rna_table 
@@ -24,7 +23,6 @@ def plot_amino_acid_frequency(codons):
     bars = ax.bar(
         df['Amino Acid'], 
         df['Frequency'],
-        color=plt.cm.rocket_r(df['Frequency'] / max(df['Frequency'])),  # 颜色随频率渐变
         edgecolor='white',
         linewidth=1.5,
         alpha=0.9
@@ -87,3 +85,5 @@ def plot_amino_acid_frequency(codons):
     plt.tight_layout()
     plt.savefig('aa_frequency.png', dpi=300, bbox_inches='tight')
     plt.show()
+codons = ['AUG', 'UUG', 'AUC', 'CAC', 'UAC', 'UUU', 'AGU', 'UAC', 'UUG', 'GUC', 'UCG', 'GAU', 'AAU', 'CUU', 'GGU', 'CCA', 'AAA', 'AAG', 'UUA', 'AAA', 'GGU', 'CUA', 'CCU', 'UCC', 'GGU', 'GGU', 'AAC', 'GAG', 'AUA', 'ACA', 'ACG', 'AUU', 'CAC', 'CAC', 'CCU', 'GCA', 'UAC', 'GGA']
+plot_amino_acid_frequency(codons)
