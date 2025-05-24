@@ -85,5 +85,3 @@ def plot_amino_acid_frequency(codons):
     plt.tight_layout()
     plt.savefig('aa_frequency.png', dpi=300, bbox_inches='tight')
     plt.show()
-codons = ['AUG', 'UUG', 'AUC', 'CAC', 'UAC', 'UUU', 'AGU', 'UAC', 'UUG', 'GUC', 'UCG', 'GAU', 'AAU', 'CUU', 'GGU', 'CCA', 'AAA', 'AAG', 'UUA', 'AAA', 'GGU', 'CUA', 'CCU', 'UCC', 'GGU', 'GGU', 'AAC', 'GAG', 'AUA', 'ACA', 'ACG', 'AUU', 'CAC', 'CAC', 'CCU', 'GCA', 'UAC', 'GGA']
-plot_amino_acid_frequency(codons)
