@@ -27,15 +27,15 @@ def select_task():
     if task == 0:
         return 0
     elif task == 1:
-        from task1 import most_frequent_nucleotide
+        from Groupwork.task1 import most_frequent_nucleotide
         most_frequent_nucleotide(codons)
         return select_task()
     elif task == 2:
-        from task2 import nucleotide_amino
+        from Groupwork.task2 import nucleotide_amino
         print(nucleotide_amino(codons))
         return select_task()
     elif task == 3:
-        from task3 import plot_amino_acid_frequency
+        from Groupwork.task3 import plot_amino_acid_frequency
         plot_amino_acid_frequency(codons)
         return select_task()
     elif task == 4:
@@ -44,7 +44,7 @@ def select_task():
         index = file.find("\n")
         mrna2 = file[index:]
         mrna2 = mrna2.replace("\n" , "")
-        from task4 import compare_mrna
+        from Groupwork.task4 import compare_mrna
         compare_mrna(mrna, mrna2, 11)
         return select_task()
     else:
