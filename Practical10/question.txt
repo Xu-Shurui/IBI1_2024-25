@@ -1,0 +1,10 @@
+Question: How has the relationship between DALYs in China and the UK changed over time?
+
+Line number: 74 (where the china variable is first defined)
+
+Discussion: 
+The analysis reveals interesting trends in the DALYs relationship between China and the UK:
+1. In the early years (1990s), China had significantly higher DALYs than the UK.
+2. Both countries show a general downward trend in DALYs over time, indicating improvements in population health.
+3. The gap between China and the UK has been narrowing, especially after 2000, suggesting China has been making faster improvements in health outcomes.
+4. The difference plot shows that while China started with DALYs about 20,000 higher than the UK, this difference reduced to less than 2500 by 2019.

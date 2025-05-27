@@ -1,20 +1,41 @@
-def calculate_drug_dosade(weight, strength):
-    if (weight <= 10 or weight >= 100):
-        raise ValueError("Weight is not a proper numbers.")
-    valid_strength = [120, 250]
-    if strength not in valid_strength:
-        raise ValueError("Strength is not a proper numbers.")
-    dose_per_kg = 15
-    dose = weight * dose_per_kg
-    mg_per_ml = strength / 5
+def calculate_drug_dosage(weight, strength):
+    """Calculate paracetamol dosage volume for children.
+    
+    Args:
+        weight (float): Patient weight in kg (10-100 kg)
+        strength (str): Drug strength ('120 mg/5 ml' or '250 mg/5 ml')
+    
+    Returns:
+        float: Volume of drug in ml
+    
+    Raises:
+        ValueError: If weight or strength are invalid
+    """
+    # Check weight range
+    if weight < 10 or weight > 100:
+        raise ValueError(f"Weight must be between 10 and 100 kg (got {weight} kg)")
+    
+    # Check strength format
+    valid_strengths = ['120 mg/5 ml', '250 mg/5 ml']
+    if strength not in valid_strengths:
+        raise ValueError(f"Strength must be one of {valid_strengths} (got '{strength}')")
+    
+    # Calculate dosage
+    dose_per_kg = 15  # mg/kg
+    dose = weight * dose_per_kg  # total mg needed
+    
+    # Extract mg value from strength string
+    mg = float(strength.split()[0])
+    mg_per_ml = mg / 5
     volume = dose / mg_per_ml
     
     return volume
+
+# Example usage
 try:
     weight = 30
-    strength = 120
-    volume = calculate_drug_dosade(weight, strength)
-    print(f"{weight} kg patient requires {volume:.2f} ml of drug with {strength} mg/5ml strength.")
+    strength = '120 mg/5 ml'
+    volume = calculate_drug_dosage(weight, strength)
+    print(f"{weight} kg patient requires {volume:.2f} ml of drug with {strength} strength.")
 except ValueError as e:
-    print(e)
-# The code above is a simple drug dosage calculator that takes a patient's weight and the strength of the drug as input and calculates the required volume of the drug in milliliters. It checks if the weight is within a valid range (between 10 and 100 kg) and if the strength is either 120 or 250 mg/5ml. If any of these conditions are not met, it raises a ValueError with an appropriate message.
+    print(f"Error: {e}")
