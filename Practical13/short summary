@@ -1,3 +1,10 @@
 1. Human SOD2 Protein Information
     Length: 222 amino acids
-    Subcellular Localization: Mitochondrion
+    The subcellular localisation of the human SOD2 protein: Mitochondrion matrix
+2. The range of percentage identities in the reported online BLAST results: 83.3 - 100
+3. The alignment score: 1097
+    The percentage of identical amino acids for each of the three comparisons that performed using Python: 
+    P04179 - P09671 : 0.9
+    P04179 - random : 0.06
+    P09671 - random : 0.07
+4.  so, P04179 and P09671 have the most similarity

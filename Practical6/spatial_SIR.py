@@ -1,68 +1,77 @@
 # spatial_SIR.py
-# 2D Stochastic SIR Model - Practical 6 Submission
-# [Your Name], [Student ID] - IBI1 2024/25
+# 2D Stochastic SIR Model with Original Viridis Colors
+# Generates four separate images for time points 0, 10, 50, 100
 
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
+from matplotlib.colors import BoundaryNorm
 
-# =============================================
 # Parameters (as specified in the guide)
-# =============================================
-GRID_SIZE = 100        # 100x100 grid (as per guide)
+GRID_SIZE = 100        # 100x100 grid
 BETA = 0.3             # Infection probability
 GAMMA = 0.05           # Recovery probability
 TIMESTEPS = 100        # Simulation duration
+PLOT_TIMES = [0, 10, 50, 100]  # Required time points
 
-# =============================================
-# Initialize Grid
-# =============================================
-# State encoding: 
-# 0 = Susceptible (S), 1 = Infected (I), 2 = Recovered (R)
+# State codes
+SUSCEPTIBLE = 0
+INFECTED = 1
+RECOVERED = 2
+
+# Initialize grid with one infected individual
 population = np.zeros((GRID_SIZE, GRID_SIZE), dtype=int)
-
-# Set exactly one random infected individual (as required)
 outbreak_pos = np.random.choice(GRID_SIZE, size=2)
-population[outbreak_pos[0], outbreak_pos[1]] = 1
+population[outbreak_pos[0], outbreak_pos[1]] = INFECTED
 
-# =============================================
-# Simulation Loop
-# =============================================
-for t in range(TIMESTEPS):
-    # Create copy for synchronous updates
-    new_pop = population.copy()
+# Store snapshots at required times
+snapshots = {}
+
+for t in range(TIMESTEPS + 1):
+    if t in PLOT_TIMES:
+        snapshots[t] = population.copy()
     
-    # Get all infected cells
-    infected_idx = np.argwhere(population == 1)
+    # Synchronous updates
+    new_population = population.copy()
+    infected_cells = np.argwhere(population == INFECTED)
     
-    for (x,y) in infected_idx:
-        # Recovery process
+    for (x, y) in infected_cells:
+        # Recovery
         if np.random.random() < GAMMA:
-            new_pop[x,y] = 2
+            new_population[x, y] = RECOVERED
             continue
         
-        # Infect neighboring cells (8-directional)
+        # Infect neighbors (8-directional)
         for dx in [-1, 0, 1]:
             for dy in [-1, 0, 1]:
                 if dx == 0 and dy == 0:
-                    continue  # Skip self
-                
-                nx, ny = x+dx, y+dy
-                
-                # Check grid boundaries
-                if 0 <= nx < GRID_SIZE and 0 <= ny < GRID_SIZE:
-                    # Only infect susceptible neighbors
-                    if population[nx,ny] == 0 and np.random.random() < BETA:
-                        new_pop[nx,ny] = 1
+                    continue
+                nx, ny = x + dx, y + dy
+                if (0 <= nx < GRID_SIZE and 
+                    0 <= ny < GRID_SIZE and 
+                    population[nx, ny] == SUSCEPTIBLE):
+                    if np.random.random() < BETA:
+                        new_population[nx, ny] = INFECTED
     
-    population = new_pop
+    population = new_population
 
-# =============================================
-# Final Visualization (as per guide)
-# =============================================
-plt.figure(figsize=(6,4), dpi=150)
-plt.imshow(population, cmap='viridis', interpolation='nearest')
-plt.title('Spatial SIR Model - Final State')
-plt.colorbar(ticks=[0,1,2], label='State: 0=S, 1=I, 2=R')
-plt.savefig("spatial_SIR_result.png", dpi=150)
-plt.show()
+# Create discrete color mapping using original viridis
+bounds = [0, 1, 2, 3]
+norm = BoundaryNorm(bounds, cm.viridis.N)
+cmap = cm.viridis
+
+# Generate separate images
+for t in PLOT_TIMES:
+    plt.figure(figsize=(6, 5), dpi=150)
+    
+    # Plot with original viridis colors
+    img = plt.imshow(snapshots[t], cmap=cmap, norm=norm, interpolation='nearest')
+    
+    # Create colorbar with original colors
+    cbar = plt.colorbar(img, ticks=[0.5, 1.5, 2.5], shrink=0.8)
+    cbar.ax.set_yticklabels(['Susceptible', 'Infected', 'Recovered'])
+    cbar.set_label('Health State', rotation=270, labelpad=15)
+    
+    plt.title(f'2D SIR Model at Time = {t}\n(Initial Infection at {outbreak_pos})')
+    plt.axis('off')
+    plt.show()
