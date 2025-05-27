@@ -1,44 +1,68 @@
+# spatial_SIR.py
+# 2D Stochastic SIR Model - Practical 6 Submission
+# [Your Name], [Student ID] - IBI1 2024/25
+
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.colors import ListedColormap
+from matplotlib import cm
 
-# Initialize population
-population = np.zeros((100, 100))  # 0: Susceptible, 1: Infected, 2: Recovered
-outbreak = np.random.choice(range(100), 2)
-population[outbreak[0], outbreak[1]] = 1
-print("Initial infected position:", outbreak)
+# =============================================
+# Parameters (as specified in the guide)
+# =============================================
+GRID_SIZE = 100        # 100x100 grid (as per guide)
+BETA = 0.3             # Infection probability
+GAMMA = 0.05           # Recovery probability
+TIMESTEPS = 100        # Simulation duration
 
-# Parameters
-beta = 0.3  # Infection probability
-gamma = 0.05  # Recovery probability
-cmap = ListedColormap(['purple', 'yellow', 'green'])  # Custom colors
+# =============================================
+# Initialize Grid
+# =============================================
+# State encoding: 
+# 0 = Susceptible (S), 1 = Infected (I), 2 = Recovered (R)
+population = np.zeros((GRID_SIZE, GRID_SIZE), dtype=int)
 
-# Simulation loop
-for t in range(100):
-    # Find all infected individuals
-    infected_indices = np.where(population == 1)
-    for i in range(len(infected_indices[0])):
-        x, y = infected_indices[0][i], infected_indices[1][i]
+# Set exactly one random infected individual (as required)
+outbreak_pos = np.random.choice(GRID_SIZE, size=2)
+population[outbreak_pos[0], outbreak_pos[1]] = 1
+
+# =============================================
+# Simulation Loop
+# =============================================
+for t in range(TIMESTEPS):
+    # Create copy for synchronous updates
+    new_pop = population.copy()
+    
+    # Get all infected cells
+    infected_idx = np.argwhere(population == 1)
+    
+    for (x,y) in infected_idx:
+        # Recovery process
+        if np.random.random() < GAMMA:
+            new_pop[x,y] = 2
+            continue
         
-        # Infect neighbors
+        # Infect neighboring cells (8-directional)
         for dx in [-1, 0, 1]:
             for dy in [-1, 0, 1]:
                 if dx == 0 and dy == 0:
                     continue  # Skip self
-                neighbor_x, neighbor_y = x + dx, y + dy
-                if 0 <= neighbor_x < 100 and 0 <= neighbor_y < 100:
-                    if population[neighbor_x, neighbor_y] == 0:  # Susceptible
-                        if np.random.rand() < beta:
-                            population[neighbor_x, neighbor_y] = 1
-        
-        # Attempt recovery
-        if np.random.rand() < gamma:
-            population[x, y] = 2
+                
+                nx, ny = x+dx, y+dy
+                
+                # Check grid boundaries
+                if 0 <= nx < GRID_SIZE and 0 <= ny < GRID_SIZE:
+                    # Only infect susceptible neighbors
+                    if population[nx,ny] == 0 and np.random.random() < BETA:
+                        new_pop[nx,ny] = 1
+    
+    population = new_pop
 
-    # Plot at specific time steps
-    if t in [0, 10, 50, 99]:
-        plt.figure(figsize=(6, 4), dpi=150)
-        plt.imshow(population, cmap=cmap, interpolation='nearest', vmin=0, vmax=2)
-        plt.title(f'Time Step {t}')
-        plt.colorbar(ticks=[0, 1, 2], label='State: 0=S, 1=I, 2=R')
-        plt.show()
+# =============================================
+# Final Visualization (as per guide)
+# =============================================
+plt.figure(figsize=(6,4), dpi=150)
+plt.imshow(population, cmap='viridis', interpolation='nearest')
+plt.title('Spatial SIR Model - Final State')
+plt.colorbar(ticks=[0,1,2], label='State: 0=S, 1=I, 2=R')
+plt.savefig("spatial_SIR_result.png", dpi=150)
+plt.show()
