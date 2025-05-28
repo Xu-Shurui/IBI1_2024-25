@@ -1,6 +1,6 @@
 Question: How has the relationship between DALYs in China and the UK changed over time?
 
-Line number: 74 (where the china variable is first defined)
+Line number: 62 (where the china variable is first defined)
 
 Discussion: 
 The analysis reveals interesting trends in the DALYs relationship between China and the UK:
