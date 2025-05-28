@@ -1,41 +1,45 @@
-def calculate_drug_dosage(weight, strength):
-    """Calculate paracetamol dosage volume for children.
-    
-    Args:
-        weight (float): Patient weight in kg (10-100 kg)
-        strength (str): Drug strength ('120 mg/5 ml' or '250 mg/5 ml')
-    
-    Returns:
-        float: Volume of drug in ml
-    
-    Raises:
-        ValueError: If weight or strength are invalid
+def calculate_paracetamol_volume():
     """
-    # Check weight range
-    if weight < 10 or weight > 100:
-        raise ValueError(f"Weight must be between 10 and 100 kg (got {weight} kg)")
+    Interactive paracetamol dosage calculator for children.
+    Only accepts 120mg/5ml or 250mg/5ml concentrations.
+    """
+    print("Paracetamol Dosage Calculator")
+    print("-----------------------------")
+    print("Valid concentrations: 120mg/5ml or 250mg/5ml\n")
     
-    # Check strength format
-    valid_strengths = ['120 mg/5 ml', '250 mg/5 ml']
-    if strength not in valid_strengths:
-        raise ValueError(f"Strength must be one of {valid_strengths} (got '{strength}')")
+    # Get weight input with validation
+    while True:
+        try:
+            weight = float(input("Enter child's weight (10-100 kg): "))
+            if 10 <= weight <= 100:
+                break
+            print("Error: Weight must be between 10-100 kg")
+        except ValueError:
+            print("Error: Please enter a valid number")
     
-    # Calculate dosage
-    dose_per_kg = 15  # mg/kg
-    dose = weight * dose_per_kg  # total mg needed
+    # Get concentration input with strict validation
+    while True:
+        try:
+            concentration = input("Enter concentration (120 or 250): ").strip()
+            if concentration not in ['120', '250']:
+                print("Error: Only 120mg/5ml or 250mg/5ml are allowed")
+                continue
+            
+            mg = float(concentration)
+            break
+        except ValueError:
+            print("Error: Please enter either 120 or 250")
     
-    # Extract mg value from strength string
-    mg = float(strength.split()[0])
-    mg_per_ml = mg / 5
-    volume = dose / mg_per_ml
+    # Calculate results
+    dose_mg = weight * 15  # Standard pediatric dose (15mg/kg)
+    volume_ml = (dose_mg / mg) * 5
     
-    return volume
+    print("\n=== Results ===")
+    print(f"Weight: {weight} kg")
+    print(f"Concentration: {mg}mg/5ml")
+    print(f"Required dose: {dose_mg}mg")
+    print(f"Volume needed: {round(volume_ml, 2)}ml")
 
-# Example usage
-try:
-    weight = 30
-    strength = '120 mg/5 ml'
-    volume = calculate_drug_dosage(weight, strength)
-    print(f"{weight} kg patient requires {volume:.2f} ml of drug with {strength} strength.")
-except ValueError as e:
-    print(f"Error: {e}")
+# Run the calculator
+if __name__ == "__main__":
+    calculate_paracetamol_volume()
