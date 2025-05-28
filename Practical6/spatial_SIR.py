@@ -6,6 +6,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.colors import BoundaryNorm
+# This code simulates a 2D spatial SIR model and generates images at specified time points
+# based on the original viridis colormap.
 
 # Parameters (as specified in the guide)
 GRID_SIZE = 100        # 100x100 grid
@@ -72,6 +74,6 @@ for t in PLOT_TIMES:
     cbar.ax.set_yticklabels(['Susceptible', 'Infected', 'Recovered'])
     cbar.set_label('Health State', rotation=270, labelpad=15)
     
-    plt.title(f'2D SIR Model at Time = {t}\n(Initial Infection at {outbreak_pos})')
-    plt.axis('off')
+    plt.title(f'2D SIR Model at Time = {t}\n(Initial Infection at {outbreak_pos})')#  Title
+    plt.axis('off')# Hide axes
     plt.show()
