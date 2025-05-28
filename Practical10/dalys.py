@@ -1,95 +1,76 @@
 # Practical 10: Working with Global Health Data
-# Import necessary libraries
+# IBI1 2024/25 - Portfolio Submission
+
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
 
-# Set working directory to where the data file is stored
-# Replace with your actual path
-os.chdir("c:/Users/21507/Desktop/生物信息学/IBI1/notes/IBI_12024-2025/IBI1_2024-25/Practical10/")
-# Ensure the directory change was successful  
+# 1. Set working directory to script location
+current_dir = os.path.dirname(os.path.abspath(__file__))
+os.chdir(current_dir)
 
-# Load the dataset
+# 2. Verify directory and load data
+print("Current directory:", os.getcwd())
+print("Files present:", os.listdir())
+
 dalys_data = pd.read_csv("dalys-rate-from-all-causes.csv")
 
-# Initial exploration of the data
-print("\nFirst 5 rows of the dataset:")
+# 3. Initial data exploration
+print("\nFirst 5 rows:")
 print(dalys_data.head(5))
 
-print("\nDataset information:")
+print("\nDataframe info:")
 print(dalys_data.info())
 
-print("\nSummary statistics:")
-print(dalys_data.describe())
+# 4. Portfolio Required Tasks
 
-# Accessing specific data using iloc
-print("\nThird column (Year) for first 10 rows:")
+# Task 1: Show years column for first 10 rows
+print("\nTask 1: Year column for first 10 rows")
 print(dalys_data.iloc[0:10, 2])
+print("Note: The 10th year with DALYs data in Afghanistan is", dalys_data.iloc[9, 2])
 
-# The 10th year with DALYs data recorded in Afghanistan is:
-afghanistan_10th_year = dalys_data.iloc[9, 2]
-print(f"\nThe 10th year with DALYs data in Afghanistan: {afghanistan_10th_year}")
-
-# Boolean indexing to get DALYs for 1990
-mask_1990 = dalys_data['Year'] == 1990
-dalys_1990 = dalys_data.loc[mask_1990, "DALYs"]
-print("\nDALYs for all countries in 1990:")
+# Task 2: Boolean indexing for 1990 data
+print("\nTask 2: DALYs for all countries in 1990 (Boolean indexing)")
+year_mask = dalys_data['Year'] == 1990  # Create Boolean mask
+dalys_1990 = dalys_data.loc[year_mask, ['Entity', 'DALYs']]  # Apply mask
 print(dalys_1990)
 
-# Comparing UK and France data
-uk = dalys_data.loc[dalys_data['Entity'] == 'United Kingdom', ['DALYs', 'Year']]
-france = dalys_data.loc[dalys_data['Entity'] == 'France', ['DALYs', 'Year']]
+# Task 3: Compare UK and France means
+print("\nTask 3: UK vs France comparison")
+uk_data = dalys_data[dalys_data['Entity'] == 'United Kingdom']
+fr_data = dalys_data[dalys_data['Entity'] == 'France']
 
-# Calculate means
-uk_mean = uk['DALYs'].mean()
-france_mean = france['DALYs'].mean()
+uk_mean = uk_data['DALYs'].mean()
+fr_mean = fr_data['DALYs'].mean()
 
-print(f"\nUK mean DALYs: {uk_mean:.2f}")
-print(f"France mean DALYs: {france_mean:.2f}")
+print(f"UK mean DALYs: {uk_mean:.2f}")
+print(f"France mean DALYs: {fr_mean:.2f}")
+print(f"Conclusion: UK mean DALYs are {'higher' if uk_mean > fr_mean else 'lower'} than France's")
 
-# Comment on comparison
-if uk_mean > france_mean:
-    comparison = "greater"
-else:
-    comparison = "less"
-print(f"The mean DALYs in the UK is {comparison} than in France.")
-
-# Plotting UK DALYs over time
-plt.figure(figsize=(10, 6))
-plt.plot(uk['Year'], uk['DALYs'], 'b+')
-plt.xticks(uk['Year'], rotation=90)
+# Task 4: Plot UK DALYs over time
+print("\nTask 4: Generating UK DALYs plot")
+plt.figure(figsize=(10,5))
+plt.plot(uk_data['Year'], uk_data['DALYs'], 'b+')
+plt.xticks(uk_data['Year'], rotation=90)
+plt.title('UK DALYs Over Time (1990-2019)')
 plt.xlabel('Year')
-plt.ylabel('DALYs')
-plt.title('DALYs in the United Kingdom Over Time')
+plt.ylabel('DALYs per 100,000')
 plt.grid(True)
 plt.tight_layout()
 plt.show()
 
-# Custom Question: How has the relationship between DALYs in China and the UK changed over time?
-china = dalys_data.loc[dalys_data['Entity'] == 'China', ['DALYs', 'Year']]
+# Task 5: Custom analysis (China vs UK comparison)
+print("\nTask 5: Custom analysis - China vs UK comparison")
+china_data = dalys_data[dalys_data['Entity'] == 'China']
 
-# Plot both countries
-plt.figure(figsize=(12, 6))
-plt.plot(uk['Year'], uk['DALYs'], 'b-', label='United Kingdom')
-plt.plot(china['Year'], china['DALYs'], 'r-', label='China')
-plt.xticks(uk['Year'], rotation=90)
+plt.figure(figsize=(12,6))
+plt.plot(uk_data['Year'], uk_data['DALYs'], 'b-', label='UK')
+plt.plot(china_data['Year'], china_data['DALYs'], 'r-', label='China')
+plt.xticks(uk_data['Year'], rotation=90)
+plt.title('DALYs Comparison: UK vs China (1990-2019)')
 plt.xlabel('Year')
-plt.ylabel('DALYs')
-plt.title('Comparison of DALYs: UK vs China Over Time')
+plt.ylabel('DALYs per 100,000')
 plt.legend()
-plt.grid(True)
-plt.tight_layout()
-plt.show()
-
-# Plot the difference between China and UK DALYs
-difference = china['DALYs'].values - uk['DALYs'].values
-plt.figure(figsize=(12, 6))
-plt.plot(uk['Year'], difference, 'g-')
-plt.xticks(uk['Year'], rotation=90)
-plt.xlabel('Year')
-plt.ylabel('DALYs Difference (China - UK)')
-plt.title('Difference in DALYs Between China and UK Over Time')
 plt.grid(True)
 plt.tight_layout()
 plt.show()
