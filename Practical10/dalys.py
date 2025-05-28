@@ -10,10 +10,6 @@ import numpy as np
 os.chdir("c:/Users/21507/Desktop/生物信息学/IBI1/notes/IBI_12024-2025/IBI1_2024-25/Practical10/")
 # Ensure the directory change was successful  
 
-# Verify working directory and files
-print("Current working directory:", os.getcwd())
-print("Files in directory:", os.listdir())
-
 # Load the dataset
 dalys_data = pd.read_csv("dalys-rate-from-all-causes.csv")
 

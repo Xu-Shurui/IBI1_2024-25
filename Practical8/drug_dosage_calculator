@@ -1,10 +1,9 @@
 def calculate_paracetamol_volume():
-    """
-    Interactive paracetamol dosage calculator for children.
-    Only accepts 120mg/5ml or 250mg/5ml concentrations.
-    """
+
+    #Interactive paracetamol dosage calculator for children.
+    #Only accepts 120mg/5ml or 250mg/5ml concentrations.
+
     print("Paracetamol Dosage Calculator")
-    print("-----------------------------")
     print("Valid concentrations: 120mg/5ml or 250mg/5ml\n")
     
     # Get weight input with validation

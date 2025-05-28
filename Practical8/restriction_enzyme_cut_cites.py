@@ -6,15 +6,15 @@ def find_restriction_enzyme_cut_sites(dna_sequence, enzyme_sequence):
     if not all(base in valid_bases for base in enzyme_sequence):
         raise ValueError("Invalid enzyme sequence. Only A, T, C, G are allowed.")
     # Find all occurrences of the enzyme sequence in the DNA sequence
-    cut_cites = []
+    cut_sites = []
     start = 0
     while True:
         start = dna_sequence.find(enzyme_sequence, start)
         if start == -1:
             break
-        cut_cites.append(start + 1)  # +1 to convert to 1-based index
+        cut_sites.append(start + 1)  # +1 to convert to 1-based index
         start += 1  # Move to the next position for the next search
-    return cut_cites
+    return cut_sites
 dna = "AGCTACTGGTACGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG"
 enzyme = "GATC"
 
